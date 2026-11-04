@@ -1,3 +1,4 @@
+require('dotenv').config(); 
 const express = require('express')
 const app = express()                       
 
@@ -236,6 +237,8 @@ app.use((req, res, next) => {
     });
 });
 
-var server = app.listen(3000, function () { 
-    console.log('Server running on http://localhost:3000'); // Konzolra kiír egy üzenetet, hogy a szerver fut és melyik porton érhető el.
+const port = process.env.PORT || 3000;
+
+app.listen(port, function () {
+    console.log(`Server running on http://localhost:${port}`);
 });
