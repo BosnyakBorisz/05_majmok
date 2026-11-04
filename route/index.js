@@ -20,14 +20,7 @@ function addRoutes(app, db, monkeyModel, bananaModel) {
         db,
         monkeyModel,
         bananaModel,
-        uuid, 
-        bananas: [
-            { id: 1, color: "yellow", sweet: false, monkeyId: null },
-            { id: 2, color: "yellow", sweet: true, monkeyId: null },
-            { id: 3, color: "green", sweet: true, monkeyId: null }, 
-            { id: 4, color: "green", sweet: false, monkeyId: null }
-        ],
-        globalBananaId: 5
+        uuid
     };
 
     app.get('/api/monkey', getMonkeysMW(objRep), (req, res, next) => res.json(res.locals.monkeys));

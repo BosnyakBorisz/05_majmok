@@ -5,14 +5,14 @@ module.exports = function (objRep) {
         }
         
         const newBanana = {
-            id: objRep.globalBananaId,
+            id: objRep.uuid.v4(), 
             color: req.body.color,
             sweet: req.body.sweet,
             monkeyId: req.body.monkeyId ?? null
         };
 
-        objRep.bananas.push(newBanana);
-        objRep.globalBananaId++;
+        objRep.bananaModel.insert(newBanana);
+        objRep.db.saveDatabase();
         
         res.locals.banana = newBanana;
         return next();

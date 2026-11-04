@@ -3,12 +3,9 @@ module.exports = function (objRep) {
         const monkeyID = res.locals.monkey ? res.locals.monkey.id : null;
         
         if (monkeyID) {
-            for (let i = objRep.bananas.length - 1; i >= 0; i--) {
-                if (objRep.bananas[i].monkeyId === monkeyID) {
-                    objRep.bananas.splice(i, 1);
-                }
-            }
+            objRep.bananaModel.chain().find({ monkeyId: monkeyID }).remove();
         }
+        
         return next();
     };
 };
