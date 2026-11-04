@@ -1,9 +1,10 @@
 module.exports = function (objRep) {
     return (req, res, next) => {
-        const foundIndex = res.locals.monkeyIndex;
+        const monkey = res.locals.monkey;
 
-        res.locals.monkey = objRep.monkeys[foundIndex];
-        objRep.monkeys.splice(foundIndex, 1);
+        objRep.monkeyModel.remove(monkey);
+        objRep.db.saveDatabase();
+        
         return next();
     };
 };

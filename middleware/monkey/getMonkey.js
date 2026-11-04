@@ -1,14 +1,12 @@
 module.exports = function (objRep) {
     return (req, res, next) => {
-        const monkeyIdAsNumber = parseInt(req.params.id, 10);
-        const foundIndex = objRep.monkeys.findIndex(m => m.id === monkeyIdAsNumber);
+        const monkey = objRep.monkeyModel.findOne({ id: req.params.id });
 
-        if (foundIndex === -1) {
+        if (!monkey) {
             return res.status(404).json({ Error: `Requested monkeyID not found! ${req.params.id}` });
         }
 
-        res.locals.monkeyIndex = foundIndex;
-        res.locals.monkey = objRep.monkeys[foundIndex];
+        res.locals.monkey = monkey;
         return next();
     };
 };

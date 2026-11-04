@@ -1,7 +1,9 @@
 module.exports = function (objRep) {
     return (req, res, next) => {
-        console.table(objRep.monkeys);
-        res.locals.monkeys = objRep.monkeys;
+        const allMonkeys = objRep.monkeyModel.find();
+        console.table(allMonkeys);
+        
+        res.locals.monkeys = allMonkeys;
         return next();
     };
 };

@@ -1,3 +1,5 @@
+const uuid = require('uuid');
+
 const getMonkeysMW = require('../middleware/monkey/getMonkeys');
 const getMonkeyMW = require('../middleware/monkey/getMonkey');
 const createMonkeyMW = require('../middleware/monkey/createMonkey');
@@ -18,19 +20,13 @@ function addRoutes(app, db, monkeyModel, bananaModel) {
         db,
         monkeyModel,
         bananaModel,
-        
-        monkeys: [
-            { id: 1, name: 'Joe', sex: 'male', species: 'gibbon' },
-            { id: 2, name: 'Josephine', sex: 'female', species: 'gorilla' },
-            { id: 3, name: 'Lajos', sex: 'male', species: 'orangutan' }
-        ],
+        uuid, 
         bananas: [
             { id: 1, color: "yellow", sweet: false, monkeyId: null },
             { id: 2, color: "yellow", sweet: true, monkeyId: null },
             { id: 3, color: "green", sweet: true, monkeyId: null }, 
             { id: 4, color: "green", sweet: false, monkeyId: null }
         ],
-        globalMonkeyId: 4,
         globalBananaId: 5
     };
 
@@ -39,7 +35,6 @@ function addRoutes(app, db, monkeyModel, bananaModel) {
     app.get('/api/monkey/:id', getMonkeyMW(objRep), (req, res, next) => res.json(res.locals.monkey));
     app.patch('/api/monkey/:id', getMonkeyMW(objRep), updateMonkeyMW(objRep), (req, res, next) => res.json(res.locals.monkey));
     app.delete('/api/monkey/:id', getMonkeyMW(objRep), deleteMonkeyBananasMW(objRep), deleteMonkeyMW(objRep), (req, res, next) => res.json(res.locals.monkey));
-
 
     app.get('/api/banana', getBananasMW(objRep), (req, res, next) => res.json(res.locals.bananas)); 
     app.post('/api/banana', checkMonkeyIdMW(objRep), createBananaMW(objRep), (req, res, next) => res.status(201).json(res.locals.banana));

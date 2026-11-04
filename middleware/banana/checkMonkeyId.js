@@ -4,13 +4,16 @@ module.exports = function (objRep) {
         if (monkeyId === undefined || monkeyId === null) {
             return next();
         }
-        if (!Number.isInteger(monkeyId)) {
-            return res.status(400).json({ error: 'monkeyId must be an integer' });
+      
+        if (typeof monkeyId !== 'string') {
+            return res.status(400).json({ error: 'monkeyId must be a string (UUID)' });
         }
-        const monkey = objRep.monkeys.find(m => m.id === monkeyId);
-        if (monkey === undefined) {
+        
+        const monkey = objRep.monkeyModel.findOne({ id: monkeyId });
+        if (!monkey) {
             return res.status(400).json({ error: 'Monkey does not exist' });
         }
+        
         return next();
     };
 };

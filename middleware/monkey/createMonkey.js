@@ -5,14 +5,14 @@ module.exports = function (objRep) {
         }
         
         const newMonkey = {
-            id: objRep.globalMonkeyId,
+            id: objRep.uuid.v4(),
             name: req.body.name,
             sex: req.body.sex,
             species: req.body.species
         };
         
-        objRep.monkeys.push(newMonkey);
-        objRep.globalMonkeyId++;
+        objRep.monkeyModel.insert(newMonkey);
+        objRep.db.saveDatabase();
         
         res.locals.monkey = newMonkey;
         return next();
