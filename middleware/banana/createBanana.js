@@ -14,6 +14,7 @@ module.exports = function (objRep) {
         objRep.bananas.push(newBanana);
         objRep.globalBananaId++;
         
-        return res.status(201).json(newBanana);
+        res.locals.banana = newBanana;
+        return next();
     };
 };

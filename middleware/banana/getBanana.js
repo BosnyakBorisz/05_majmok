@@ -7,6 +7,8 @@ module.exports = function (objRep) {
             return res.status(404).json({ Error: `Requested bananaID not found! ${req.params.id}` });
         }
 
-        return res.status(200).json(objRep.bananas[foundIndex]);
+        res.locals.bananaIndex = foundIndex;
+        res.locals.banana = objRep.bananas[foundIndex];
+        return next();
     };
 };

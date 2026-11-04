@@ -7,6 +7,8 @@ module.exports = function (objRep) {
             return res.status(404).json({ Error: `Requested monkeyID not found! ${req.params.id}` });
         }
 
-        return res.status(200).json(objRep.monkeys[foundIndex]);
+        res.locals.monkeyIndex = foundIndex;
+        res.locals.monkey = objRep.monkeys[foundIndex];
+        return next();
     };
 };
