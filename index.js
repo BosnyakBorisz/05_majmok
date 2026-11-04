@@ -1,26 +1,29 @@
 require('dotenv').config(); 
+const { initDatabase } = require('./service/db');
 const express = require('express');
-const app = express();                       
+const addRoutes = require('./route'); 
+const app = express();
 
-const addRoutes = require('./route/index.js');
+app.use(express.json());
 
-app.use(express.json());                    
-
-addRoutes(app);
-
-app.use((req, res, next) => {
-    if (req.method === 'OPTIONS') {
-        return next();   
+initDatabase((err, result) => {
+    if (err) {
+        return console.error(err);
     }
-    res.status(404).json({
-        error: 'Not found',
-        method: req.method,
-        path: req.originalUrl
+    const { db, monkeyModel, bananaModel } = result;
+
+    addRoutes(app, db, monkeyModel, bananaModel);
+
+
+    app.use((req, res) => {
+        return res.status(404).json({
+            error: `Endpoint or method not found: ${req.method} ${req.originalUrl}`
+        });
     });
-});
 
-const port = process.env.PORT || 3000;
+    const port = process.env.PORT || 3000;
 
-app.listen(port, function () {
-    console.log(`Server running on http://localhost:${port}`);
+    app.listen(port, function () {
+        console.log(`Server running on http://localhost:${port}`);
+    });
 });
