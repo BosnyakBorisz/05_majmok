@@ -1,39 +1,43 @@
 <%- include('header') %>
 
-<h2 class="mb-4 text-white">Majmok</h2>
-
-<table class="table table-striped table-bordered bg-white shadow-sm">
-    <thead class="table-dark">
+<table class="table table-striped">
+    <thead>
         <tr>
             <th>Name</th>
             <th>Sex</th>
             <th>Species</th>
             <th>Bananas</th>
-            <th>Operation</th>
+            <th>Műveletek</th>
         </tr>
     </thead>
     <tbody>
         <% if (locals.monkeys && monkeys.length > 0) { %>
-            <% monkeys.forEach(function(monkey) { %>
-                <tr>
-                    <td><%= monkey.name %></td>
-                    <td><%= monkey.sex %></td>
-                    <td><%= monkey.species %></td>
-                    <td>
-                        <% 
-                            let bananaCount = 0;
-                            if (locals.bananas && bananas.length > 0) {
-                                bananaCount = bananas.filter(b => b.monkeyId === monkey.id).length;
-                            }
-                        %>
-                        <%= bananaCount %>
-                    </td>
-                    <td>
-                        <a href="/monkey/edit/<%= monkey.id %>" class="btn btn-primary btn-sm">Edit</a>
-                        <a href="/monkey/delete/<%= monkey.id %>" class="btn btn-danger btn-sm" onclick="return confirm('Biztosan törlöd?')">Delete</a>
-                    </td>
-                </tr>
-            <% }); %>
+            <% monkeys.forEach(item => { %> 
+            <tr>
+                <td>
+                    <%= item.name %>
+                </td>
+                <td>
+                     <%= item.sex %>
+                </td>
+                <td>
+                     <%= item.species %>
+                </td>
+                <td>
+                    <% 
+                        let bananaCount = 0;
+                        if (locals.bananas && bananas.length > 0) {
+                            bananaCount = bananas.filter(b => b.monkeyId === item.id).length;
+                        }
+                    %>
+                    <%= bananaCount %>
+                </td>
+                <td>
+                    <a href="/monkey/edit/<%= item.id %>" class="btn btn-primary btn-sm m-1">Szerkesztés</a>
+                    <a href="/monkey/delete/<%= item.id %>" class="btn btn-danger btn-sm m-1" onclick="return confirm('Biztosan törlöd?')">Törlés</a>
+                </td>
+            </tr>
+            <% }) %>
         <% } else { %>
             <tr>
                 <td colspan="5" class="text-center text-muted">Nincsenek majmok az adatbázisban.</td>
@@ -42,6 +46,6 @@
     </tbody>
 </table>
 
-<a href="/monkey/new" class="btn btn-primary mt-2">New Monkey</a>
+<a href="/monkey/new" class="btn btn-primary">Új majom</a>
 
 <%- include('footer') %>
