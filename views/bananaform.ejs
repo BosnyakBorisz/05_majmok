@@ -1,0 +1,52 @@
+<%- include('header') %>
+
+<div class="container px-0">
+    <% 
+        let isEdit = typeof locals.banana !== 'undefined' && locals.banana !== null;
+        let formAction = isEdit ? '/banana/edit/' + banana.id : '/banana/new';
+        let pageTitle = isEdit ? 'Edit banana' : 'New banana';
+    %>
+
+    <h1 class="mb-4 fw-normal" style="font-family: monospace;"><%= pageTitle %></h1>
+    
+    <form action="<%= formAction %>" method="POST">
+        
+        <div class="mb-4">
+            <label for="color" class="form-label text-secondary small">Color</label>
+            <input type="text" class="form-control form-control-lg rounded-3 bg-white border-0 shadow-sm" 
+                   id="color" name="color" value="<%= isEdit ? banana.color : '' %>" required>
+        </div>
+
+        <div class="mb-4 form-check fs-5">
+            <input type="checkbox" class="form-check-input shadow-sm border-secondary" id="sweet" name="sweet" 
+                   <%= (isEdit && banana.sweet) ? 'checked' : '' %> style="cursor: pointer; width: 1.5rem; height: 1.5rem;">
+            <label class="form-check-label text-secondary small pt-1 ps-2" for="sweet" style="cursor: pointer; user-select: none;">Sweet</label>
+        </div>
+
+        <div class="mb-4">
+            <label for="monkeyId" class="form-label text-secondary small">Owner</label>
+            <select class="form-select form-control-lg rounded-3 bg-white border-0 shadow-sm" id="monkeyId" name="monkeyId">
+                <option value="" <%= (!isEdit || !banana.monkeyId) ? 'selected' : '' %>>- nincs gazdája -</option>
+                <% if (locals.monkeys && monkeys.length > 0) { %>
+                    <% monkeys.forEach(function(monkey) { %>
+                        <option value="<%= monkey.id %>" <%= (isEdit && banana.monkeyId === monkey.id) ? 'selected' : '' %>>
+                            <%= monkey.name %>
+                        </option>
+                    <% }); %>
+                <% } %>
+            </select>
+        </div>
+
+        <div class="row g-2 mt-4">
+            <div class="col-6">
+                <button type="submit" class="btn w-100 py-3 text-white fw-medium rounded-3" style="background-color: #4d5efd; border: none;">Save</button>
+            </div>
+            <div class="col-6">
+                <a href="/banana" class="btn w-100 py-3 text-dark fw-medium rounded-3" style="background-color: #ffca40; border: none; text-decoration: none; display: inline-block; text-align: center;">Cancel</a>
+            </div>
+        </div>
+        
+    </form>
+</div>
+
+<%- include('footer') %>

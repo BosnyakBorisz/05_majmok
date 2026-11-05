@@ -21,7 +21,6 @@
                 </td>
                 <td>
                     <% 
-                        // Megkeressük a banánhoz tartozó majmot a név kiírásához
                         let ownerName = '-';
                         if (item.monkeyId && locals.monkeys && monkeys.length > 0) {
                             let foundMonkey = monkeys.find(m => m.id === item.monkeyId);
