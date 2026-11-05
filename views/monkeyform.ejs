@@ -1,0 +1,38 @@
+<%- include('header') %>
+
+<div class="container px-4">
+    <h1 class="mb-4 fw-normal" style="font-family: monospace;">New monkey</h1>
+    
+    <form action="/monkey/new" method="POST">
+        
+        <div class="mb-4">
+            <label for="name" class="form-label text-secondary small">Name</label>
+            <input type="text" class="form-control form-control-lg rounded-3 bg-white border-0 shadow-sm" id="name" name="name" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="sex" class="form-label text-secondary small">Sex</label>
+            <select class="form-select form-control-lg rounded-3 bg-white border-0 shadow-sm" id="sex" name="sex" required>
+                <option value="male" selected>male</option>
+                <option value="female">female</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label for="species" class="form-label text-secondary small">Species</label>
+            <input type="text" class="form-control form-control-lg rounded-3 bg-white border-0 shadow-sm" id="species" name="species" required>
+        </div>
+
+        <div class="row g-2 mt-4">
+            <div class="col-6">
+                <button type="submit" class="btn w-100 py-3 text-white fw-medium rounded-3" style="background-color: #4d5efd; border: none;">Save</button>
+            </div>
+            <div class="col-6">
+                <a href="/monkey" class="btn w-100 py-3 text-dark fw-medium rounded-3" style="background-color: #ffca40; border: none; text-decoration: none; display: inline-block; text-align: center;">Cancel</a>
+            </div>
+        </div>
+        
+    </form>
+</div>
+
+<%- include('footer') %>
