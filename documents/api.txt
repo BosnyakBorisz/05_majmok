@@ -35,3 +35,66 @@ DELETE /banana/:id – banán törlése azonosító alapján (DELETE).
  
 Egyéb
 Bármilyen más útvonal vagy metódus – 404-es JSON hiba.
+
+
+1. majmok oldal
+   - Cím: GET /
+   - Middleware lánc: getMonkeysMW, getBananasMW, renderMW('monkeyList')
+   - Leírás: Megjeleníti az összes majmot és a hozzájuk tartozó banánok darabszámát.
+
+2. új majom
+   - Cím: GET /monkey/new
+   - Middleware lánc: renderMW('monkeyForm')
+   - Leírás: Megjeleníti az üres űrlapot új majom felvételéhez.
+
+3. új majom mentése/küldése 
+   - Cím: POST /monkey/new
+   - Middleware lánc: createMonkeyMW, redirectMW('/')
+   - Leírás: Elmenti az új majmot az adatbázisba, majd visszairányít a főoldalra.
+
+4. majom szerkesztése űrlap
+   - Cím: GET /monkey/edit/:id
+   - Middleware lánc: getMonkeyMW, renderMW('monkeyForm')
+   - Leírás: Megjeleníti a kiválasztott majom adataival előre kitöltött űrlapot.
+
+5. majom módosítás 
+   - Cím: POST /monkey/edit/:id
+   - Middleware lánc: getMonkeyMW, updateMonkeyMW, redirectMW('/')
+   - Leírás: Frissíti a majom adatait az adatbázisban, majd visszairányít a főoldalra.
+
+6. majom törlése
+   - Cím: GET /monkey/delete/:id
+   - Middleware lánc: getMonkeyMW, deleteMonkeyBananasMW, deleteMonkeyMW, redirectMW('/')
+   - Leírás: Törli a majmot és az összes banánját, majd visszairányít a főoldalra.
+
+
+
+7. banánok listája
+   - Cím: GET /banana
+   - Middleware lánc: getBananasMW, getMonkeysMW, renderMW('bananaList')
+   - Leírás: Megjeleníti az összes banánt és a hozzájuk rendelt majmok nevét.
+
+8. új banán
+   - Cím: GET /banana/new
+   - Middleware lánc: getMonkeysMW, renderMW('bananaForm')
+   - Leírás: Megjeleníti az űrlapot és a majmok választólistáját (legördülő menü).
+
+9. új banán mentése
+   - Cím: POST /banana/new
+   - Middleware lánc: checkMonkeyIdMW, createBananaMW, redirectMW('/banana')
+   - Leírás: Elmenti az új banánt az adatbázisba, majd visszairányít a banánlistára.
+
+10. banán szerkesztése
+    - Cím: GET /banana/edit/:id
+    - Middleware lánc: getBananaMW, getMonkeysMW, renderMW('bananaForm')
+    - Leírás: Megjeleníti a banán adataival kitöltött űrlapot és a majomválasztót.
+
+11. banán módosítás küldése
+    - Cím: POST /banana/edit/:id
+    - Middleware lánc: getBananaMW, checkMonkeyIdMW, updateBananaMW, redirectMW('/banana')
+    - Leírás: Frissíti a banán adatait az adatbázisban, majd visszairányít a banánlistára.
+
+12. banán törlés
+    - Cím: GET /banana/delete/:id
+    - Middleware lánc: getBananaMW, deleteBananaMW, redirectMW('/banana')
+    - Leírás: Törli a banánt az adatbázisból, majd visszairányít a banánlistára.
