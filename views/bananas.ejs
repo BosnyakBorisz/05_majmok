@@ -1,0 +1,51 @@
+<%- include('header') %>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Color</th>
+            <th>Sweet</th>
+            <th>Owner Monkey</th>
+            <th>Műveletek</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (locals.bananas && bananas.length > 0) { %>
+            <% bananas.forEach(item => { %> 
+            <tr>
+                <td>
+                    <%= item.color %>
+                </td>
+                <td>
+                     <%= item.sweet ? 'Igen' : 'Nem' %>
+                </td>
+                <td>
+                    <% 
+                        // Megkeressük a banánhoz tartozó majmot a név kiírásához
+                        let ownerName = '-';
+                        if (item.monkeyId && locals.monkeys && monkeys.length > 0) {
+                            let foundMonkey = monkeys.find(m => m.id === item.monkeyId);
+                            if (foundMonkey) {
+                                ownerName = foundMonkey.name;
+                            }
+                        }
+                    %>
+                    <%= ownerName %>
+                </td>
+                <td>
+                    <a href="/banana/edit/<%= item.id %>" class="btn btn-primary btn-sm m-1">Szerkesztés</a>
+                    <a href="/banana/delete/<%= item.id %>" class="btn btn-danger btn-sm m-1" onclick="return confirm('Biztosan törlöd?')">Törlés</a>
+                </td>
+            </tr>
+            <% }) %>
+        <% } else { %>
+            <tr>
+                <td colspan="4" class="text-center text-muted">Nincsenek banánok az adatbázisban.</td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+
+<a href="/banana/new" class="btn btn-primary">Új banán</a>
+
+<%- include('footer') %>

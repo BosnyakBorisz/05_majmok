@@ -13,6 +13,7 @@ const createBananaMW = require('../middleware/banana/createBanana');
 const updateBananaMW = require('../middleware/banana/updateBanana');
 const deleteBananaMW = require('../middleware/banana/deleteBanana');
 const checkMonkeyIdMW = require('../middleware/banana/checkMonkeyId');
+const parseBananaFormMW = require('../middleware/banana/parseBananaForm');
 
 const renderMW = require('../middleware/render');
 
@@ -25,23 +26,24 @@ function addRoutes(app, db, monkeyModel, bananaModel) {
         uuid
     };
 
-    // böngésző
-    app.get('/', (req, res, next) => res.redirect('/monkey')); // A gyökércím átirányít a majmok listájára
-    app.get('/monkey', getMonkeysMW(objRep), getBananasMW(objRep), renderMW(objRep, 'monkeys')); // Ez rajzolja ki a listát
+    //böngésző
+    app.get('/', (req, res, next) => res.redirect('/monkey')); 
+    app.get('/monkey', getMonkeysMW(objRep), getBananasMW(objRep), renderMW(objRep, 'monkeys')); 
     app.get('/monkey/new', renderMW(objRep, 'monkeyform'));
-    app.post('/monkey/new', createMonkeyMW(objRep), (req, res, next) => res.redirect('/'));
-    app.get('/monkey/delete/:id', getMonkeyMW(objRep), deleteMonkeyBananasMW(objRep), deleteMonkeyMW(objRep), (req, res, next) => res.redirect('/'));
+    app.post('/monkey/new', createMonkeyMW(objRep), (req, res, next) => res.redirect('/monkey'));
+    app.get('/monkey/delete/:id', getMonkeyMW(objRep), deleteMonkeyBananasMW(objRep), deleteMonkeyMW(objRep), (req, res, next) => res.redirect('/monkey'));
     app.get('/monkey/edit/:id', getMonkeyMW(objRep), renderMW(objRep, 'monkeyform'));
-    app.post('/monkey/edit/:id', getMonkeyMW(objRep), updateMonkeyMW(objRep), (req, res, next) => res.redirect('/'));
+    app.post('/monkey/edit/:id', getMonkeyMW(objRep), updateMonkeyMW(objRep), (req, res, next) => res.redirect('/monkey'));
+
 
     app.get('/banana', getBananasMW(objRep), getMonkeysMW(objRep), renderMW(objRep, 'bananas'));
     app.get('/banana/new', getMonkeysMW(objRep), renderMW(objRep, 'bananaform'));
-    app.post('/banana/new', checkMonkeyIdMW(objRep), createBananaMW(objRep), (req, res, next) => res.redirect('/banana'));
     app.get('/banana/delete/:id', getBananaMW(objRep), deleteBananaMW(objRep), (req, res, next) => res.redirect('/banana'));
     app.get('/banana/edit/:id', getBananaMW(objRep), getMonkeysMW(objRep), renderMW(objRep, 'bananaform'));
-    app.post('/banana/edit/:id', getBananaMW(objRep), checkMonkeyIdMW(objRep), updateBananaMW(objRep), (req, res, next) => res.redirect('/banana'));
+    app.post('/banana/new', parseBananaFormMW(objRep), checkMonkeyIdMW(objRep), createBananaMW(objRep), (req, res, next) => res.redirect('/banana'));
+    app.post('/banana/edit/:id', getBananaMW(objRep), parseBananaFormMW(objRep), checkMonkeyIdMW(objRep), updateBananaMW(objRep), (req, res, next) => res.redirect('/banana'));
 
-    // json
+    //json
     app.get('/api/monkey', getMonkeysMW(objRep), (req, res, next) => res.json(res.locals.monkeys));
     app.post('/api/monkey', createMonkeyMW(objRep), (req, res, next) => res.status(201).json(res.locals.monkey));
     app.get('/api/monkey/:id', getMonkeyMW(objRep), (req, res, next) => res.json(res.locals.monkey));
@@ -52,7 +54,7 @@ function addRoutes(app, db, monkeyModel, bananaModel) {
     app.post('/api/banana', checkMonkeyIdMW(objRep), createBananaMW(objRep), (req, res, next) => res.status(201).json(res.locals.banana));
     app.get('/api/banana/:id', getBananaMW(objRep), (req, res, next) => res.json(res.locals.banana));
     app.delete('/api/banana/:id', getBananaMW(objRep), deleteBananaMW(objRep), (req, res, next) => res.json(res.locals.banana));
-    app.patch('/api/banana/:id', getBananaMW(objRep), checkMonkeyIdMW(objRep), updateBananaMW(objRep), (req, res, next) => res.json(res.locals.banana));
+    app.patch('/api/banana/:id', checkMonkeyIdMW(objRep), updateBananaMW(objRep), (req, res, next) => res.json(res.locals.banana));
 }
 
 module.exports = addRoutes;
