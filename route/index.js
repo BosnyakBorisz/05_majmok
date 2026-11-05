@@ -26,7 +26,8 @@ function addRoutes(app, db, monkeyModel, bananaModel) {
     };
 
     // böngésző
-    app.get('/', getMonkeysMW(objRep), getBananasMW(objRep), renderMW(objRep, 'monkeys'));
+    app.get('/', (req, res, next) => res.redirect('/monkey')); // A gyökércím átirányít a majmok listájára
+    app.get('/monkey', getMonkeysMW(objRep), getBananasMW(objRep), renderMW(objRep, 'monkeys')); // Ez rajzolja ki a listát
     app.get('/monkey/new', renderMW(objRep, 'monkeyform'));
     app.post('/monkey/new', createMonkeyMW(objRep), (req, res, next) => res.redirect('/'));
     app.get('/monkey/delete/:id', getMonkeyMW(objRep), deleteMonkeyBananasMW(objRep), deleteMonkeyMW(objRep), (req, res, next) => res.redirect('/'));
@@ -40,7 +41,7 @@ function addRoutes(app, db, monkeyModel, bananaModel) {
     app.get('/banana/edit/:id', getBananaMW(objRep), getMonkeysMW(objRep), renderMW(objRep, 'bananaform'));
     app.post('/banana/edit/:id', getBananaMW(objRep), checkMonkeyIdMW(objRep), updateBananaMW(objRep), (req, res, next) => res.redirect('/banana'));
 
-    // json válasz
+    // json
     app.get('/api/monkey', getMonkeysMW(objRep), (req, res, next) => res.json(res.locals.monkeys));
     app.post('/api/monkey', createMonkeyMW(objRep), (req, res, next) => res.status(201).json(res.locals.monkey));
     app.get('/api/monkey/:id', getMonkeyMW(objRep), (req, res, next) => res.json(res.locals.monkey));
